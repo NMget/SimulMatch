@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jouer Match</title>
+    <style>
+        .active {
+            color: darkorange;
+        }
+        .inactive {
+            color: black;
+        }
+        .hidden {
+            display: none;
+        }
+        .modal {
+            display: block; /* Show the modal */
+            position: fixed;
+            z-index: 1;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgb(0,0,0);
+            background-color: rgba(0,0,0,0.4);
+            padding-top: 60px;
+        }
+        .modal-content {
+            background-color: #fefefe;
+            margin: 5% auto;
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+        }
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Afficher le modal pour choisir l'équipe qui sert
+            var modal = document.getElementById("myModal");
+            var closeModal = document.getElementsByClassName("close")[0];
+
+            closeModal.onclick = function() {
+                modal.style.display = "none";
+            }
+
+            window.onclick = function(event) {
+                if (event.target == modal) {
+                    modal.style.display = "none";
+                }
+            }
+
+            // Sélection de l'équipe qui sert
+            document.getElementById('chooseTeam1').addEventListener('click', function() {
+                setActiveTeam('team1');
+                modal.style.display = "none";
+                enablePointButtons();
+            });
+
+            document.getElementById('chooseTeam2').addEventListener('click', function() {
+                setActiveTeam('team2');
+                modal.style.display = "none";
+                enablePointButtons();
+            });
+
+            function enablePointButtons() {
+                document.getElementById('addPointTeam1').disabled = false;
+                document.getElementById('addPointTeam2').disabled = false;
+            }
+
+            // Ajouter des points aux équipes et changer les couleurs
+            document.getElementById('addPointTeam1').addEventListener('click', function() {
+                let p1 = document.getElementById('p1');
+                p1.textContent = parseInt(p1.textContent) + 1;
+                setActiveTeam('team1');
+            });
+
+            document.getElementById('addPointTeam2').addEventListener('click', function() {
+                let p2 = document.getElementById('p2');
+                p2.textContent = parseInt(p2.textContent) + 1;
+                setActiveTeam('team2');
+            });
+
+            function setActiveTeam(team) {
+                let team1 = document.getElementById('team1');
+                let team2 = document.getElementById('team2');
+                
+                if (team === 'team1') {
+                    team1.classList.add('active');
+                    team1.classList.remove('inactive');
+                    team2.classList.remove('active');
+                    team2.classList.add('inactive');
+                } else {
+                    team2.classList.add('active');
+                    team2.classList.remove('inactive');
+                    team1.classList.remove('active');
+                    team1.classList.add('inactive');
+                }
+
+                // Vérifier si les scores sont différents
+                let score1 = parseInt(document.getElementById('p1').textContent);
+                let score2 = parseInt(document.getElementById('p2').textContent);
+                if (score1 !== score2) {
+                    document.getElementById('endMatch').disabled = false;
+                } else {
+                    document.getElementById('endMatch').disabled = true;
+                }
+            }
+
+            // Finir le match
+            document.getElementById('endMatch').addEventListener('click', function() {
+                let score1 = parseInt(document.getElementById('p1').textContent);
+                let score2 = parseInt(document.getElementById('p2').textContent);
+                let winningTeam = score1 > score2 ? {{ team1.id }} : {{ team2.id }};
+                let matchId = {{ match.id }};
+                window.location.href = `{{ url_for('match_bp.resMatch', match='MATCH_ID', team='TEAM_ID') }}`.replace('MATCH_ID', matchId).replace('TEAM_ID', winningTeam);
+            });
+        });
+    </script>
+</head>
+<body>
+    <!-- Modal pour choisir l'équipe qui sert -->
+    <div id="myModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Choisir l'équipe qui sert :</h2>
+            <button id="chooseTeam1">{{ team1.name }}</button>
+            <button id="chooseTeam2">{{ team2.name }}</button>
+        </div>
+    </div>
+
+    <div>
+        <h3 id="team1" class="inactive">{{ team1.name }}</h3>
+        <img src="{{ url_for('static', filename=team1.logo) }}" alt="{{ team1.name }} logo">
+        <p>Points: <span id="p1">{{ p1 }}</span></p>
+        <button id="addPointTeam1" disabled>Ajouter un point à {{ team1.name }}</button>
+    </div>
+    <div>
+        <h3 id="team2" class="inactive">{{ team2.name }}</h3>
+        <img src="{{ url_for('static', filename=team2.logo) }}" alt="{{ team2.name }} logo">
+        <p>Points: <span id="p2">{{ p2 }}</span></p>
+        <button id="addPointTeam2" disabled>Ajouter un point à {{ team2.name }}</button>
+    </div>
+    <button id="endMatch" disabled>Finir le match</button>
+</body>
+</html>
