@@ -93,4 +93,4 @@ Ce projet est sous licence MIT. Consultez le fichier [LICENSE](LICENSE) pour plu
 
 ---
 
-Développé par [Votre Nom](https://simul-match.vercel.app)
+Développé par [MEGNET Noah](https://simul-match.vercel.app)
