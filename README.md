@@ -1,28 +1,96 @@
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+# Application Web de Retranscription de Matchs de Volley
 
-# Flask + Vercel
+## Description
 
-This example shows how to use Flask 3 on Vercel with Serverless Functions using the [Python Runtime](https://vercel.com/docs/concepts/functions/serverless-functions/runtimes/python).
+Ce projet a pour objectif de créer une application web permettant la retranscription de matchs de volley simplifiée, adaptée pour les tournois de notre club de volley. L'application permet de jouer des matchs déjà enregistrés dans la base de données ou de créer de nouveaux matchs, tout en affichant quelle équipe sert et le score de chaque équipe en temps réel.
 
-## Demo
+## Fonctionnalités
 
-https://flask-python-template.vercel.app/
+- **Gestion des matchs** : Créer de nouveaux matchs ou jouer des matchs existants.
+- **Suivi du service** : Indiquer quelle équipe est en train de servir.
+- **Mise à jour des scores** : Mettre à jour le score de chaque équipe en temps réel.
+- **Historique des matchs** : Enregistrer et consulter l'historique des matchs et leurs résultats.
 
-## How it Works
+## Technologies Utilisées
 
-This example uses the Web Server Gateway Interface (WSGI) with Flask to enable handling requests on Vercel with Serverless Functions.
+- **Framework** : Flask (Python)
+- **ORM** : SQLAlchemy
+- **Base de Données** : PostgreSQL
+- **Outil de gestion de base de données** : PGAdmin
 
-## Running Locally
+## Structure de la Base de Données
 
-```bash
-npm i -g vercel
-vercel dev
-```
+La base de données est conçue avec les tables suivantes :
 
-Your Flask application is now available at `http://localhost:3000`.
+- **Team** : Enregistre les équipes avec des champs pour le nom et l'URL du logo.
+- **Poule** : Organise les équipes en groupes de compétition distincts.
+- **Liaison** : Relie les équipes et les poules, en enregistrant les points accumulés par chaque équipe dans chaque poule.
+- **Joueur** : Enregistre les membres de chaque équipe avec des références à leur équipe.
+- **Match** : Enregistre les rencontres entre les équipes avec des champs pour l'ID de la poule, les ID des équipes impliquées et le résultat.
 
-## One-Click Deploy
+## Installation
 
-Deploy the example using [Vercel](https://vercel.com?utm_source=github&utm_medium=readme&utm_campaign=vercel-examples):
+### Prérequis
 
-[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https%3A%2F%2Fgithub.com%2Fvercel%2Fexamples%2Ftree%2Fmain%2Fpython%2Fflask3&demo-title=Flask%203%20%2B%20Vercel&demo-description=Use%20Flask%203%20on%20Vercel%20with%20Serverless%20Functions%20using%20the%20Python%20Runtime.&demo-url=https%3A%2F%2Fflask3-python-template.vercel.app%2F&demo-image=https://assets.vercel.com/image/upload/v1669994156/random/flask.png)
+- Python 3.x
+- PostgreSQL
+- PGAdmin
+
+### Étapes d'installation
+
+1. **Cloner le dépôt**
+
+    ```bash
+    git clone https://github.com/NMget/SimulMatch.git
+    cd SimulMatch
+    ```
+
+2. **Créer et activer un environnement virtuel**
+
+    ```bash
+    python -m venv env
+    source env/bin/activate  # Sur Windows, utilisez `env\Scripts\activate`
+    ```
+
+3. **Installer les dépendances**
+
+    ```bash
+    pip install -r requirements.txt
+    ```
+
+4. **Configurer la base de données**
+
+    - Créez une base de données PostgreSQL pour l'application.
+    - Configurez les informations de connexion à la base de données dans le fichier `app.py`.
+
+5. **Initialiser la base de données**
+
+    ```bash
+    flask db init
+    flask db migrate
+    flask db upgrade
+    ```
+
+6. **Lancer l'application**
+
+    ```bash
+    flask run
+    ```
+
+## Utilisation
+
+- Accédez à l'application via `http://127.0.0.1:5000`.
+- Créez de nouveaux matchs ou sélectionnez des matchs existants.
+- Mettez à jour le score et suivez le déroulement des matchs en temps réel.
+
+## Contributions
+
+Les contributions sont les bienvenues ! Veuillez soumettre une pull request ou ouvrir une issue pour toute suggestion ou amélioration.
+
+## Licence
+
+Ce projet est sous licence MIT. Consultez le fichier [LICENSE](LICENSE) pour plus d'informations.
+
+---
+
+Développé par [Votre Nom](https://simul-match.vercel.app)
